@@ -1,0 +1,37 @@
+html {    
+    font-family: placeholder: "Noto Sans TC", sans-serif;
+}
+
+body {
+	background-color: rgb(249, 245, 245);
+}
+
+.banner{
+    height: 450px;
+}
+.decorate{
+	width: 24px;
+	height: 24px;
+}
+#cartImg{
+	width: 240px;
+	height: 240px;
+}
+.category-list-item{
+	text-decoration: none;            
+}
+.list-group-item,
+#modal-body-text,
+.hint{
+	text-align: center;
+}
+.categorylabel{            
+	padding-left: 20px;
+}
+.categorytext{
+	padding-top: 8px;	            
+}
+.ordertext{
+	padding-top: 8px;
+	text-align: center;
+}

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>                 
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" herf="#"><img src="../../static/images/menu.png" class="decorate">&nbsp老哥麵店</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">              
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('createOrder', thisAccount=thisAccount , thispwd=thispwd)}}">建立訂單</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('orderDetail', thisAccount=thisAccount , thispwd=thispwd)}}">訂單詳細</a>
+            </li>       
+            <li class="nav-item">
+              <a class="nav-link" href="#">結帳頁面</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('login')}}">登出</a>
+            </li>                            
+          </ul>            
+        </div>
+      </div>
+    </nav> 
+    <!-- banner -->
+      <div class="banner overflow-hidden d-none d-md-block">
+        <img src="../../static/images/banner2.jpg" class="w-100 h-100">
+      </div>
+    <!-- table -->
+    <div class="container mt-3">
+      <div class="categorylabel border border-info mb-3 rounded">
+        <div class="ordertext">            
+          <h4>目前尚未結帳訂單</h4>
+        </div>  
+      </div>  
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">訂單編號</th>
+            <th scope="col">訂單時間</th>
+            <th scope="col">桌號</th>
+            <th scope="col">金額</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in orders%}  
+          <tr>
+            <th scope="row">{{item.0}}</th>
+            <td>{{item.1}}</td>
+            <td>{{item.2}}</td>
+            <td>{{item.3}}</td>
+            <td><button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal" value={{item.0}}>結帳</button></td>            
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>   
+    <!-- Modal -->    
+    <form class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" method="post">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">            
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">確認結帳頁面</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">                            
+              <label for="exampleInputNum" class="form-label">訂單編號：
+              <input type="text" readonly class="form-control-plaintext" id="oederNumInput" name="checkNum"></label>
+              <br><strong>請確認此顧客已完成付費動作！</strong>                                       
+            </div>
+            <div class="modal-footer">                
+              <button type="submit" class="btn btn-primary rounded-pill" id="submitCheck">已確認</button>
+              <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">關閉</button>
+            </div>
+          </div>
+        </div>
+    </form>
+    <script src="../../static/scripts/popper.min.js"></script>
+    <script src="../../static/scripts/bootstrap.min.js"></script>
+    <script src="../../static/scripts/getCheck.js"></script>
+  </body>
+</html>       

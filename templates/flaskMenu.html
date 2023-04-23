@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../../../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../../../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>             
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" herf="#"><img src="../../../static/images/menu.png" class="decorate">&nbsp老哥麵店&nbsp訂單編號：{{thisOrderNum}}</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0">              
+              <li class="nav-item">
+                <a class="nav-link" href="#">我要點餐</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('checkorder', thisOrderNum=thisOrderNum, thisTableID=thisTableID, thisToken=thisToken)}}">目前訂單狀況</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  關於我們
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#"><img src="../../../static/images/dish.png" class="decorate">&nbsp店家資訊</a></li>
+                  <li><a class="dropdown-item" href="https://pse.is/4vwlwk" target="_blank"><img src="../../../static/images/facebook.png" class="decorate">&nbspFB粉絲團</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal"><img src="../../../static/images/cart.png" class="decorate">購物車</a> 
+              </li>              
+            </ul>            
+          </div>
+        </div>
+      </nav>
+    <!-- banner -->
+      <div class="banner overflow-hidden d-none d-md-block">
+        <img src="../../../static/images/banner2.jpg" class="w-100 h-100">
+      </div>      
+    <!-- categorylist -->
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col-12 col-md-2">
+            <ul class="list-group mx-5 sticky-top">
+            {% for items in DishType %}
+            <li class="list-group-item"><a href="#{{items.0}}" class="category-list-item">{{items.0}}</a></li>
+            {% endfor %}
+            </ul>            
+          </div>
+    <!-- menu -->
+        <div class="col-12 col-md-10 flex-column mb-3">
+          {% for type in DishType %}
+          <div class="categorylabel border border-info mb-3 rounded" id={{type.0}}>
+            <div class="categorytext">            
+              <h4>{{type.0}}</h4>
+            </div>  
+          </div>       
+
+          <div class="row"> 
+            {% for item in menu %}
+            {% if item.2 == type.0 %}
+            <div class="col-12 col-md-6">            
+                            
+            <div class="card mb-3">
+              <div class="row g-0">              
+                <div class="col-md-10">
+                  <div class="card-body">                  
+                    <p class="card-text">{{item.0}}&nbspNT.&nbsp{{item.1}}</p>                  
+                  </div>
+                </div>  
+                <div class="col-md-2">
+                  <div class="card-img mt-1" >                  
+                    <button class="btn" data-bs-toggle="modal" data-bs-target="#itemsModal" id={{item.0}} title={{item.2}} value={{item.1}}><img src="../../../static/images/add.png" class="decorate"></button>                  
+                  </div>                 
+                </div>                 
+              </div>
+            </div>
+
+            </div>
+            {% endif %}
+            {% endfor %}            
+          </div>
+          {% endfor %}
+        </div>
+        </div>        
+      </div>       
+    <!-- cartModal -->
+    <form class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true" method="post" actin="">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">            
+            <h5 class="modal-title" id="cartModalLabel">購物車頁面</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>            
+          </div>
+          <div class="modal-body" id="cartModalBody">                        
+          </div>
+          <div class="modal-footer justify-content-center">
+            <div class="mb-3 row">
+              <label for="totalID" class="col-md-4 col-form-label">總計：</label>
+              <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext text-info" id="totalID" name="total">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="tableID" class="col-md-4 col-form-label">桌號：</label>
+              <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext text-info" value={{thisTableID}}>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-warning rounded-pill" id="submitCart" name="cartList">確認訂單</button>                        
+          </div>
+        </div>
+      </div>
+    </form>  
+    <!-- itemsModal -->
+    <form class="modal fade" id="itemsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header container">
+            <div class="mb-3 row">
+              <label for="itemNameID" class="col-md-4 col-form-label">品名：</label>
+              <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext text-info" id="itemNameID" name="itemName">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="itemPriceID" class="col-md-4 col-form-label">價格：</label>
+              <div class="col-md-8">
+                <input type="text" readonly class="form-control-plaintext text-info" id="itemPriceID" name="itemPrice">
+              </div>
+            </div> 
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="itemsModalBody">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary rounded-pill" id="submitCheck">加入購物車</button>
+            <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">關閉</button>            
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- inner script --> 
+    <script>
+      const submitCheck = document.getElementById('submitCheck')      
+      const itemsModal = document.getElementById('itemsModal')
+      const itemName = document.getElementById('itemNameID')
+      const itemPrice = document.getElementById('itemPriceID')
+      const itemsModalBody = document.getElementById('itemsModalBody')
+      const cartModal = document.getElementById('cartModal')
+      const cartModalBody = document.getElementById('cartModalBody')
+      const submitCart = document.getElementById('submitCart')
+      const totalPrice = document.getElementById('totalID')
+      const cartList = []      
+      const inputQuantity = 
+      `
+          <div class="mb-3">
+            <label for="itemQuantity" class="form-label">輸入數量</label>
+            <input type="number" id="itemQuantity" name="inputNum" min="1" max="10" value="1"/>
+          </div>
+      `   
+      const noodlesModal = inputQuantity + 
+      `          
+          <div class="mb-3">
+            <div>
+              <label for="exampleInputSoup" class="form-label">乾麵或湯麵</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="noodleType" id="soup" value="soup" checked>
+              <label class="form-check-label" for="inlineCheckbox2">湯麵</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="noodleType" id="nosoup" value="nosoup">
+              <label class="form-check-label" for="inlineCheckbox1">乾麵</label>
+            </div>            
+          </div>
+          <div class="mb-3">
+            <div>
+              <label for="exampleInputSoup" class="form-label">需不需要加大</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="sizeType" id="normal" value="normal" checked>
+              <label class="form-check-label" for="inlineCheckbox2">不需要</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="sizeType" id="big" value="big">
+              <label class="form-check-label" for="inlineCheckbox1">需要</label>
+            </div>            
+          </div>
+      `
+      const hotpotModal = inputQuantity + 
+      `          
+          <div class="mb-3">
+            <label for="selectDish" class="form-label">選擇主食</label>
+            <select class="form-select" aria-label="Default select example" id="selectDish" name="dishID">            
+            {% for dish in sideDish %}
+              <option value={{dish.1}}>{{dish.1}}</option>
+            {% endfor %}
+            </select>
+          </div>     
+      `
+      const defaultCart =
+      `
+          <div class="row">
+            <div class="col-md-4 offset-md-4">
+              <img src="../../../static/images/noItems.jpg" class="cartImg">
+            </div>
+          </div>
+          <div id="modal-body-text">              
+            目前購物車沒有商品！
+          </div>
+      ` 
+      function render() {        
+          let htmlStr = ''
+          let total = 0          
+
+          if (cartList.length == 0){
+              cartModalBody.innerHTML = defaultCart
+          }else{
+            cartList.forEach(function (item) {
+              total += (item.price * item.itemQuantity)            
+              htmlStr = htmlStr + 
+              `
+                <div class="card mb-3">
+                  <div class="row g-0">              
+                    <div class="col-md-3">
+                      <div class="card-body">                  
+                        <p class="card-text">品名：${item.name}</p>                  
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="card-body">                  
+                        <p class="card-text">價格：${item.price}</p>                  
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="card-body">                  
+                        <p class="card-text">數量：${item.itemQuantity}</p>                  
+                      </div>
+                    </div>                    
+                    <div class="col-md-1 offset-md-2 m-auto">
+                      <button type="button" class="btn btn-secondary rounded-pill cancelButton">取消</button>                  
+                    </div>                 
+                  </div>
+                </div>
+              `                       
+            })
+                              
+        cartModalBody.innerHTML = htmlStr
+      }
+        const cancelButton = document.querySelectorAll('.cancelButton');       
+        
+        for(let i=0; i<cancelButton.length; i++){
+          cancelButton[i].index = i;
+          cancelButton[i].onclick = function(){
+            cartList.splice(cancelButton[i].index, 1);
+            alert('已取消此商品');
+            render();              
+          }
+        };        
+        submitCart.value = JSON.stringify(cartList);
+        totalPrice.textContent = total;
+        totalPrice.value = total;            
+      }
+      
+      window.addEventListener('load', function (){
+          itemsModal.addEventListener('show.bs.modal', function (e) {        
+              let btn = e.relatedTarget;                        
+              itemName.textContent = btn.id;
+              itemName.value = btn.id;              
+              itemPrice.textContent = '價格' + btn.value + '元';
+              itemPrice.value = btn.value;              
+              if (btn.title == "麵食"){
+                itemsModalBody.innerHTML = noodlesModal
+              }else if (btn.title == "鍋燒"){
+                itemsModalBody.innerHTML = hotpotModal
+              }else{
+                itemsModalBody.innerHTML = inputQuantity
+              }
+          })
+      
+          submitCheck.addEventListener('click', function(){
+              const itemQuantity = document.getElementById('itemQuantity')
+              const existName = cartList.find(item => item.name === itemName.value);
+              if (!existName){
+                cartList.unshift({
+                  name: itemName.value,
+                  itemQuantity: itemQuantity.value,
+                  price: itemPrice.value
+                });
+                alert('已加入購物車');
+              }else{
+                existName.itemQuantity = Number(existName.itemQuantity)
+                existName.itemQuantity += Number(itemQuantity.value); 
+                alert('已加入購物車'); 
+              }      
+              render();                                                                                                    
+          })    
+          
+          cartModal.addEventListener('show.bs.modal', function () {
+              if (cartList.length == 0){
+                cartModalBody.innerHTML = defaultCart
+              };              
+          })
+
+          submitCart.addEventListener('click', function(){
+              if (cartList.length == 0){
+                alert('尚未選購商品！');
+                window.history.back();
+              }                                                                                                                            
+          })
+      })
+    </script>
+    <script src="../../../static/scripts/popper.min.js"></script>  
+    <script src="../../../static/scripts/bootstrap.min.js"></script>    
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>                 
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" herf="#"><img src="../../static/images/menu.png" class="decorate">&nbsp老哥麵店&nbsp新增菜單頁面</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('modifyMenu', thisAccount=thisAccount , thispwd=thispwd)}}">修改菜單</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">新增菜單</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('analyze', thisAccount=thisAccount , thispwd=thispwd)}}">查詢營收和分析</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('login')}}">登出</a>
+            </li>                           
+          </ul>            
+        </div>
+      </div>
+    </nav>  
+    <!-- banner -->
+      <div class="banner overflow-hidden d-none d-md-block">
+        <img src="../../static/images/banner2.jpg" class="w-100 h-100">
+      </div>
+    <!-- insert -->
+    <div class="container mt-3">
+      <div class="categorylabel border border-info mb-3 rounded">
+        <div class="ordertext">            
+          <h4>新增菜單</h4>
+        </div>  
+      </div>
+      <div class="row justify-content-center">
+        {% for type in DishType %}
+        <div class="col-md-2  d-grid gap-2 m-2">
+          <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#insertModal" id={{type.0}} title={{type.1}}>{{type.1}}</button>
+        </div>
+        {% endfor %}
+      </div> 
+    </div>
+    <!-- insert modal -->
+    <form class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true" method="post">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4>新增餐點</h4>
+              <input type="text" hidden class="form-control-plaintext text-info modal-title" id="typeName" name="typeID">            
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="insertNameID" class="form-label">品項名稱</label>
+                <input type="text" class="form-control" id="insertNameID" name="insertName">                
+              </div>
+              <div class="mb-3">
+                <label for="insertPriceID" class="form-label">價格</label>
+                <input type="text" class="form-control" id="insertPriceID" name="insertPrice">                
+              </div>
+              {% for choice in choose %}
+              <div class="mb-3">
+                <div class="form-check form-switch">
+                  <label for={{choice.0}} class="form-label">能不能決定{{choice.0}}</label>
+                  <input class="form-check-input" type="checkbox" id={{choice.0}} checked>                  
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary rounded-pill" id="insertCheck">確認</button>
+              <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">關閉</button>            
+            </div>
+          </div>
+        </div>
+      </form>
+    <script>     
+      const insertModal = document.getElementById('insertModal');
+      const insertName = document.getElementById('insertNameID');
+      const insertPrice = document.getElementById('insertPriceID');
+      const insertCheck = document.getElementById('insertCheck');
+      const typeName = document.getElementById('typeName')      
+        
+      window.addEventListener('load', function (){ 
+          insertModal.addEventListener('show.bs.modal', function(e){        
+              let btn = e.relatedTarget;
+              typeName.value = btn.id;
+          })
+
+          insertCheck.addEventListener('click', function(){
+              alert('新增餐點資訊成功！'); 
+              window.location.href = window.location.href;     
+          })
+      })     
+    </script>  
+    <script src="../../static/scripts/popper.min.js"></script>
+    <script src="../../static/scripts/bootstrap.min.js"></script>
+  </body>
+</html>       

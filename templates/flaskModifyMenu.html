@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>             
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" herf="#"><img src="../../static/images/menu.png" class="decorate">&nbsp老哥麵店&nbsp修改菜單頁面</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#">修改菜單</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('insertMenu', thisAccount=thisAccount, thispwd=thispwd)}}">新增菜單</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('analyze', thisAccount=thisAccount, thispwd=thispwd)}}">查詢營收和分析</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('login')}}">登出</a>
+            </li>                           
+          </ul>            
+        </div>
+      </div>
+    </nav>
+    <!-- banner -->
+    <div class="banner overflow-hidden d-none d-md-block">
+      <img src="../../static/images/banner2.jpg" class="w-100 h-100">
+    </div>  
+    <!-- categorylist -->
+    <div class="container mt-3">
+      <div class="row">
+        <div class="col-12 col-md-2">
+          <ul class="list-group mx-5 sticky-top">
+            {% for items in DishType %}
+            <li class="list-group-item"><a href="#{{items.0}}" class="category-list-item">{{items.0}}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+    <!-- menu -->        
+        <div class="col-12 col-md-10 flex-column mb-3">
+          {% for type in DishType %}
+          <div class="categorylabel border border-info mb-3 rounded" id={{type.0}}>
+            <div class="categorytext">            
+              <h4>{{type.0}}</h4>
+            </div>  
+          </div>       
+
+          <div class="row"> 
+            {% for item in menu %}
+            {% if item.2 == type.0 %}
+            <div class="col-12 col-md-6">            
+                            
+            <div class="card mb-3">
+              <div class="row g-0">              
+                <div class="col-md-10">
+                  <div class="card-body">                  
+                    <p class="card-text">{{item.0}}&nbspNT.&nbsp{{item.1}}</p>                  
+                  </div>
+                </div>  
+                <div class="col-md-2 my-auto">                                    
+                  <button type="button" class="btn btn-primary rounded-pill modifyButton" data-bs-toggle="modal" data-bs-target="#modifyModal" title={{item.0}} id={{item.1}}>修改</button>
+                </div>                 
+              </div>
+            </div>
+
+            </div>
+            {% endif %}
+            {% endfor %}            
+          </div>
+          {% endfor %}
+        </div>
+           
+        </div>        
+      </div>            
+    </div>
+    
+    <!-- modify modal -->
+    <form class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true" method="post">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <input type="text" readonly class="form-control-plaintext text-info modal-title" id="originalName" name="originalName">            
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="modifyNameID" class="form-label">品項名稱</label>
+              <input type="text" class="form-control" id="modifyNameID" name="modifyName">                
+            </div>
+            <div class="mb-3">
+              <label for="modifyPriceID" class="form-label">價格</label>
+              <input type="text" class="form-control" id="modifyPriceID" name="modifyPrice">                
+            </div>
+            {% for choice in choose %}
+            <div class="mb-3">
+              <div class="form-check form-switch">
+                <label for={{choice.0}} class="form-label">能不能決定{{choice.0}}</label>
+                <input class="form-check-input" type="checkbox" id={{choice.0}} checked>                  
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary rounded-pill" id="modifyCheck">確認</button>
+            <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">關閉</button>            
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- inner script --> 
+    <script>
+      const modifyButton = document.querySelectorAll('.modifyButton');
+      const modifyModal = document.getElementById('modifyModal');
+      const modifyName = document.getElementById('modifyNameID');
+      const modifyPrice = document.getElementById('modifyPriceID');
+      const modifyCheck = document.getElementById('modifyCheck');
+      const originalName = document.getElementById('originalName')      
+        
+      window.addEventListener('load', function (){ 
+          modifyModal.addEventListener('show.bs.modal', function(e){        
+              let btn = e.relatedTarget;
+              originalName.value = btn.title;                                                    
+              modifyName.value = btn.title;                                          
+              modifyPrice.value = btn.id;
+          })
+
+          modifyCheck.addEventListener('click', function(){
+              alert('修改餐點資訊成功！'); 
+              window.location.href = window.location.href;     
+          })
+      })
+        
+    </script>  
+    <script src="../../static/scripts/popper.min.js"></script>
+    <script src="../../static/scripts/bootstrap.min.js"></script>
+  </body>
+</html>

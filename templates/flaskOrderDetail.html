@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>                 
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" herf="#"><img src="../../static/images/menu.png" class="decorate">&nbsp老哥麵店&nbsp訂單詳細</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">              
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('createOrder', thisAccount=thisAccount , thispwd=thispwd)}}">建立訂單</a>
+            </li> 
+            <li class="nav-item">
+              <a class="nav-link" href="#">訂單詳細</a>
+            </li>     
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('getCheck', thisAccount=thisAccount , thispwd=thispwd)}}">結帳頁面</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('login')}}">登出</a>
+            </li>                            
+          </ul>            
+        </div>
+      </div>
+    </nav> 
+    <!-- banner -->
+      <div class="banner overflow-hidden d-none d-md-block">
+        <img src="../../static/images/banner2.jpg" class="w-100 h-100">
+      </div>
+    <!-- card -->
+    <div class="container mt-3">
+      <div class="categorylabel border border-info mb-3 rounded">
+        <div class="ordertext">            
+          <h4>目前待出餐訂單</h4>
+        </div>  
+      </div>        
+      <div class="container mb-4">
+        <div class="row text-center">
+          {% for num in orderNum %}          
+          <div class="col-12 col-md-3">
+            <div class="card m-2 text-center">
+              <p class="card-title pt-3">訂單編號：{{num.0}}&emsp;桌號：{{num.1}}</p>
+              <hr>
+                <div class="card-body">
+                  <table class="mx-auto mt-0 table table-striped table-success">                    
+                    <thead>
+                        <tr>
+                          <th scope="col">品名</th>
+                          <th scope="col">數量</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in detail%}
+                        {% if item.0 == num.0 %}  
+                        <tr>
+                          <td scope="row">{{item.1}}</td>
+                          <td>{{item.2}}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                      </tbody>
+                  </table>                
+                </div>            
+            </div>        
+          </div>
+          {% endfor %}
+        </div>  
+      </div>
+    </div>   
+    <script src="../../static/scripts/popper.min.js"></script>
+    <script src="../../static/scripts/bootstrap.min.js"></script>
+  </body>
+</html>       

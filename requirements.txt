@@ -1,0 +1,4 @@
+Flask
+Flask-SQLAlchemy<2.0
+pyodbc
+matplotlib

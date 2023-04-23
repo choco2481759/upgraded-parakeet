@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>                 
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" herf="#"><img src="../static/images/menu.png" class="decorate">&nbsp老哥麵店</a>
+      </div>
+    </nav>
+    <!-- banner -->
+      <div class="banner overflow-hidden d-none d-md-block">
+        <img src="../static/images/banner2.jpg" class="w-100 h-100">
+      </div>
+    <!-- log in -->
+    <div class="container mt-3">
+      <div class="categorylabel border border-info mb-3 rounded">
+        <div class="ordertext">            
+          <h4>後台登入</h4>
+        </div>  
+      </div>
+      <div class="col-10 col-md-4 offset-4">
+        <form method="POST">
+          <div class="mb-3">            
+            <input type="text" class="form-control" placeholder="請輸入帳號" id="inputAccount" name="account">
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" placeholder="請輸入密碼" id="inputPassword" name="pwd">
+          </div>
+          <div class="mb-3 offset-5">
+            <button type="submit" class="btn btn-primary btn-warning">登入</button>
+          </div>
+        </form>  
+      </div> 
+    </div>
+    <script src="../static/scripts/popper.min.js"></script>
+    <script src="../static/scripts/bootstrap.min.js"></script>
+  </body>
+</html>       

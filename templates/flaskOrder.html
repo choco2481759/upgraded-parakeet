@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../../../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../../../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>                 
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" herf="#"><img src="../../../static/images/menu.png" class="decorate">&nbsp老哥麵店</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">              
+            <li class="nav-item" id="navMenu">
+              <a class="nav-link" href="{{url_for('menu', thisOrderNum=orderNum, thisTableID=tableID, thisToken=token)}}">返回點餐頁面</a>
+            </li>                            
+          </ul>            
+        </div>
+      </div>
+    </nav>
+    <!-- banner -->
+      <div class="banner overflow-hidden d-none d-md-block">
+        <img src="../../../static/images/banner2.jpg" class="w-100 h-100">
+      </div>
+    <!-- table -->
+    <div class="container mt-3">
+      <div class="border border-info mb-3 rounded">
+        <div class="orderHeader ordertext text-info">            
+          <h4 id="orderNum" value={{orderNum}}>訂單編號：{{orderNum}}</h4>
+        </div>  
+      </div>  
+      <table class="table">
+        <thead>
+          <tr>            
+            <th scope="col">餐點名稱</th>
+            <th scope="col">價格</th>
+            <th scope="col">數量</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cartList%}  
+          <tr>
+            <th scope="row">{{item.0}}</th>
+            <td>{{item.1}}</td>
+            <td>{{item.2}}</td>                       
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="border border-info mb-3 rounded row">
+        <div class="orderFooter col-12 col-md-6 ordertext text-info">
+            <h4 id="tableID" value={{tableID}}>桌號：{{tableID}}</h4>
+        </div>
+        <div class="orderFooter col-12 col-md-6 ordertext text-info">
+          <h4>總計：{{total}}元</h4>
+        </div>
+      </div>
+      <div class="container mt-3 text-danger ordertext">
+        <p>建議保留此頁面或截圖，以便店員送餐時確認餐點！</p>
+      </div>
+    </div>
+    <script src="../../../static/scripts/popper.min.js"></script>
+    <script src="../../../static/scripts/bootstrap.min.js"></script>
+  </body>
+</html>       

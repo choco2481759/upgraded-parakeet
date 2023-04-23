@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>                 
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" herf="#"><img src="../../static/images/menu.png" class="decorate">&nbsp老哥麵店</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">              
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('createOrder', thisAccount=thisAccount , thispwd=thispwd)}}">返回建立訂單</a>
+            </li>                            
+          </ul>                      
+        </div>
+      </div>
+    </nav>  
+    <!-- banner -->
+    <div class="banner overflow-hidden d-none d-md-block">
+      <img src="../../static/images/banner2.jpg" class="w-100 h-100">
+    </div>
+    <!-- table -->
+    <div class="container mt-3 text-danger ordertext">
+      <h3>訂單建立完成，請將QRcode交給客人進行點餐！</h3>
+    </div>
+    <div class="container">
+      {% for info in orderInfo %}
+      <div class="mb-3 row">
+        <label for={{info.0}} class="col-md-2 offset-md-4 col-form-label text-center">訂單編號：</label>
+        <div class="col-md-3">
+          <input type="text" readonly class="form-control-plaintext text-info" id="orderNum" value={{info.0}}>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for={{tableID}} class="col-md-2 offset-md-4 col-form-label text-center">桌號：</label>
+        <div class="col-md-3">
+          <input type="text" readonly class="form-control-plaintext text-info" id="tableID" value={{tableID}}>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for={{info.1}} class="col-md-2 offset-md-4 col-form-label text-center">識別碼：</label>
+        <div class="col-md-3">
+          <input type="text" readonly class="form-control-plaintext text-info" id="token" value={{info.1}}>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="mb-3 row">
+        <div class="col-md-4 offset-md-5" id="imgQRcode">
+        </div>
+      </div>
+    </div>   
+    <script>
+      const imgQRcode = document.getElementById('imgQRcode')
+      const orderNum = document.getElementById('orderNum')
+      const tableID = document.getElementById('tableID')
+      const token = document.getElementById('token')
+      
+      let orderNumUrl = '/' + orderNum.value
+      let tableIDUrl = '/' + tableID.value
+      let tokenUrl = '/' + token.value
+
+      let url = ' http://127.0.0.1:50001/menu' + orderNumUrl + tableIDUrl + tokenUrl
+
+      const img =
+      `
+        <img src="http://www.funcode-tech.com/Encoder_Service/img.aspx?
+        custid=1&username=public&codetype=QR&EClevel=0&data=${url}" width="150"/>
+      `
+
+      window.addEventListener('load', function (){ 
+        imgQRcode.innerHTML = img  
+      })
+    </script>  
+    <script src="../../static/scripts/popper.min.js"></script>
+    <script src="../../static/scripts/bootstrap.min.js"></script>
+  </body>
+</html>       

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <link rel='shortcut icon' href='../../static/images/menu.ico' type='image/x-icon'>
+    <link rel="stylesheet" href="../../static/styles/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../static/styles/order.css" type="text/css">
+    <title>老哥麵店</title>                 
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" herf="#"><img src="../../static/images/menu.png" class="decorate">&nbsp老哥麵店</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">              
+            <li class="nav-item">
+              <a class="nav-link" href="#">建立訂單</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('orderDetail', thisAccount=thisAccount , thispwd=thispwd)}}">訂單詳細</a>
+            </li>       
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('getCheck', thisAccount=thisAccount , thispwd=thispwd)}}">結帳頁面</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('login')}}">登出</a>
+            </li>
+          </ul>            
+        </div>
+      </div>
+    </nav>  
+    <!-- banner -->
+      <div class="banner overflow-hidden d-none d-md-block">
+        <img src="../../static/images/banner2.jpg" class="w-100 h-100">
+      </div>
+    <!-- table -->
+    <div class="container mt-3">
+      <div class="categorylabel border border-info mb-3 rounded col-md-4 offset-md-4">
+        <div class="ordertext">            
+          <h4>選擇客人的座位</h4>
+        </div>  
+      </div>
+      <form class="col-md-4 offset-md-4" method="post">
+        <select class="form-select" aria-label="Default select example" name="tableID" required>
+          <option selected value="">請選擇桌號</option>
+          {% for table in tables %}
+            <option value={{table.0}}>{{table.0}}</option>
+          {% endfor %}
+        </select>
+        <div class="mt-3 offset-md-5">
+          <button type="submit" class="btn btn-warning rounded-pill" id="submitCheck">建立訂單</button>
+        </div>
+      </form> 
+    </div>  
+    <script src="../../static/scripts/popper.min.js"></script>
+    <script src="../../static/scripts/bootstrap.min.js"></script>
+  </body>
+</html>       
