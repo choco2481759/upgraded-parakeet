@@ -1,4 +1,11 @@
 Flask
-Flask-SQLAlchemy<2.0
-pyodbc
+flask_sqlalchemy<2.0
+sqlalchemy<2.0
 matplotlib
+Flask-Migrate
+Flask-SQLAlchemy<2.0
+flask_wtf
+psycopg2
+python-dotenv
+SQLAlchemy<2.0
+pymssql
